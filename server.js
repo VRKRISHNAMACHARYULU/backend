@@ -1,5 +1,3 @@
-// server.js - Backend for handling contact form submissions with Brevo API
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -14,13 +12,17 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app/', // Replace with your frontend URL in production
-  methods: ['POST'],
-  allowedHeaders: ['Content-Type'],
+  // Remove trailing slash, and allow multiple origins
+  origin: process.env.FRONTEND_URL ? 
+          [process.env.FRONTEND_URL, 'https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app'] : 
+          'https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Enable if you need cookies/auth
 }));
 
-// // Handle preflight (OPTIONS) request
-// app.options('*', cors()); // This will handle all OPTIONS requests
+// Handle preflight (OPTIONS) request explicitly
+app.options('/contact', cors());
 
 // Configure Brevo API client
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -30,6 +32,9 @@ apiKey.apiKey = process.env.BREVO_API_KEY; // Brevo API key from your .env
 // Contact form endpoint
 app.post('/contact', async (req, res) => {
   try {
+    console.log('Received contact form submission from:', req.headers.origin);
+    console.log('Request body:', req.body);
+    
     // Extract contact form details from the request body
     const { name, email, subject, message } = req.body;
     
@@ -41,7 +46,7 @@ app.post('/contact', async (req, res) => {
     // Create a new email instance using Brevo API
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
     const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-
+    
     // Configure the email content
     sendSmtpEmail.subject = `Portfolio Contact: ${subject || 'New message from your website'}`;
     sendSmtpEmail.htmlContent = `
@@ -68,7 +73,10 @@ app.post('/contact', async (req, res) => {
     // Respond back with success
     res.status(200).json({ message: 'Message sent successfully!' });
   } catch (error) {
-    console.error('Email sending error:', error.response || error);
+    console.error('Email sending error details:', error);
+    if (error.response) {
+      console.error('API error response:', error.response.body || error.response);
+    }
     // Respond back with error message
     res.status(500).json({ message: 'Failed to send message. Please try again later.' });
   }

@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // Example using Express.js
 app.use(cors({
   origin: [
-      "https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app",
+      "https://myportfolio-liard-two-33.vercel.app/",
       "http://localhost:3000"
   ],
   methods: ["GET", "POST"],

@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://192.168.153.1:8080', // Replace with your frontend URL in production
+  origin: process.env.FRONTEND_URL || 'https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app/', // Replace with your frontend URL in production
   methods: ['POST'],
   allowedHeaders: ['Content-Type'],
 }));

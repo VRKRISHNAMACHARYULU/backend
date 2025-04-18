@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors({
   origin: [
       "https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app",
-       
+      "http://localhost:3000"
   ],
   methods: ["GET", "POST"],
   credentials: true

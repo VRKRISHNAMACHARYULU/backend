@@ -11,14 +11,14 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // CORS configuration
+// Example using Express.js
 app.use(cors({
-  // Remove trailing slash, and allow multiple origins
-  origin: process.env.FRONTEND_URL ? 
-          [process.env.FRONTEND_URL, 'https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app'] : 
-          'https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // Enable if you need cookies/auth
+  origin: [
+      "https://myportfolio-oiqtkpr6g-v-r-krishnamacharyulus-projects.vercel.app",
+      "http://localhost:3000"
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
 }));
 
 // Handle preflight (OPTIONS) request explicitly

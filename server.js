@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // Example using Express.js
 app.use(cors({
   origin: [
-      "https://krishnamacharyulu.vercel.app/",
+      "https://krishnamacharyulu.vercel.app",
       "http://localhost:3000"
   ],
   methods: ["GET", "POST"],
